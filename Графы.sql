@@ -1,61 +1,61 @@
 --- 1
-select top 1 with ties (select Название from Города where Город_ID = Город_ID_1) as City_1, 
-(select Название from Города where Город_ID = Город_ID_2) as City_2
-from Маршруты
-order by Расстояние asc
+select top 1 with ties (select РќР°Р·РІР°РЅРёРµ from Р“РѕСЂРѕРґР° where Р“РѕСЂРѕРґ_ID = Р“РѕСЂРѕРґ_ID_1) as City_1, 
+(select РќР°Р·РІР°РЅРёРµ from Р“РѕСЂРѕРґР° where Р“РѕСЂРѕРґ_ID = Р“РѕСЂРѕРґ_ID_2) as City_2
+from РњР°СЂС€СЂСѓС‚С‹
+order by Р Р°СЃСЃС‚РѕСЏРЅРёРµ asc
 
 --- 2
-select top 1 with ties Cities_1.Название, Cities_2.Название
-from Маршруты left join Города as Cities_1 on Город_ID_1 = Cities_1.Город_ID
-left join Города as Cities_2 on Город_ID_2 = Cities_2.Город_ID
-where Cities_1.Область_ID = Cities_2.Область_ID
-order by Cities_1.Область_ID asc
+select top 1 with ties Cities_1.РќР°Р·РІР°РЅРёРµ, Cities_2.РќР°Р·РІР°РЅРёРµ
+from РњР°СЂС€СЂСѓС‚С‹ left join Р“РѕСЂРѕРґР° as Cities_1 on Р“РѕСЂРѕРґ_ID_1 = Cities_1.Р“РѕСЂРѕРґ_ID
+left join Р“РѕСЂРѕРґР° as Cities_2 on Р“РѕСЂРѕРґ_ID_2 = Cities_2.Р“РѕСЂРѕРґ_ID
+where Cities_1.РћР±Р»Р°СЃС‚СЊ_ID = Cities_2.РћР±Р»Р°СЃС‚СЊ_ID
+order by Cities_1.РћР±Р»Р°СЃС‚СЊ_ID asc
 
 --- 3
-select Cities_1.Город_ID, Cities_2.Город_ID
-from Города as Cities_1 cross join Города as Cities_2
-where Cities_1.Город_ID < Cities_2.Город_ID
+select Cities_1.Р“РѕСЂРѕРґ_ID, Cities_2.Р“РѕСЂРѕРґ_ID
+from Р“РѕСЂРѕРґР° as Cities_1 cross join Р“РѕСЂРѕРґР° as Cities_2
+where Cities_1.Р“РѕСЂРѕРґ_ID < Cities_2.Р“РѕСЂРѕРґ_ID
 	except
-select Город_ID_1, Город_ID_2
-from Маршруты
+select Р“РѕСЂРѕРґ_ID_1, Р“РѕСЂРѕРґ_ID_2
+from РњР°СЂС€СЂСѓС‚С‹
 
 --- 4
-select distinct Город_ID_1
-from Маршруты
+select distinct Р“РѕСЂРѕРґ_ID_1
+from РњР°СЂС€СЂСѓС‚С‹
 	except
-select distinct Город_ID_2
-from Маршруты
+select distinct Р“РѕСЂРѕРґ_ID_2
+from РњР°СЂС€СЂСѓС‚С‹
 
 --- 5
-select distinct Город_ID_2
-from Маршруты
+select distinct Р“РѕСЂРѕРґ_ID_2
+from РњР°СЂС€СЂСѓС‚С‹
 	except
-select distinct Город_ID_1
-from Маршруты
+select distinct Р“РѕСЂРѕРґ_ID_1
+from РњР°СЂС€СЂСѓС‚С‹
 
 --- 6
-/*Я решил сделать более общий запрос. Он будет работать, если нужно будет найти возможные города при большем количестве переходов.
-Запрос работает, если число шагов не больше 1, т.е. если мы вообще не двигаемся или делаем 1 шаг*/
+/*РЇ СЂРµС€РёР» СЃРґРµР»Р°С‚СЊ Р±РѕР»РµРµ РѕР±С‰РёР№ Р·Р°РїСЂРѕСЃ. РћРЅ Р±СѓРґРµС‚ СЂР°Р±РѕС‚Р°С‚СЊ, РµСЃР»Рё РЅСѓР¶РЅРѕ Р±СѓРґРµС‚ РЅР°Р№С‚Рё РІРѕР·РјРѕР¶РЅС‹Рµ РіРѕСЂРѕРґР° РїСЂРё Р±РѕР»СЊС€РµРј РєРѕР»РёС‡РµСЃС‚РІРµ РїРµСЂРµС…РѕРґРѕРІ.
+Р—Р°РїСЂРѕСЃ СЂР°Р±РѕС‚Р°РµС‚, РµСЃР»Рё С‡РёСЃР»Рѕ С€Р°РіРѕРІ РЅРµ Р±РѕР»СЊС€Рµ 1, С‚.Рµ. РµСЃР»Рё РјС‹ РІРѕРѕР±С‰Рµ РЅРµ РґРІРёРіР°РµРјСЃСЏ РёР»Рё РґРµР»Р°РµРј 1 С€Р°Рі*/
 declare @city int, @n int
 set @city = 4
-set @n = 3 /*Максимальное число шагов*/
+set @n = 3 /*РњР°РєСЃРёРјР°Р»СЊРЅРѕРµ С‡РёСЃР»Рѕ С€Р°РіРѕРІ*/
 
-/*Таблица, которая включает в себя прямые и обратные маршруты.*/
+/*РўР°Р±Р»РёС†Р°, РєРѕС‚РѕСЂР°СЏ РІРєР»СЋС‡Р°РµС‚ РІ СЃРµР±СЏ РїСЂСЏРјС‹Рµ Рё РѕР±СЂР°С‚РЅС‹Рµ РјР°СЂС€СЂСѓС‚С‹.*/
 create table #Routes(City_ID_1 int, City_ID_2 int, Distance float, primary key(City_ID_1, City_ID_2))
 
 insert into #Routes(City_ID_1, City_ID_2, Distance)
-	select Город_ID_1, Город_ID_2, Расстояние
-	from Маршруты
+	select Р“РѕСЂРѕРґ_ID_1, Р“РѕСЂРѕРґ_ID_2, Р Р°СЃСЃС‚РѕСЏРЅРёРµ
+	from РњР°СЂС€СЂСѓС‚С‹
 
 insert into #Routes(City_ID_1, City_ID_2, Distance)
-	select Город_ID_2, Город_ID_1, Расстояние
-	from Маршруты
+	select Р“РѕСЂРѕРґ_ID_2, Р“РѕСЂРѕРґ_ID_1, Р Р°СЃСЃС‚РѕСЏРЅРёРµ
+	from РњР°СЂС€СЂСѓС‚С‹
 	
-/*#Sources - таблица со всеми началами. Если мы на 1-ом шаге выезжаем из города 1, он пемещается сюда. 
-Если на 2-ом шаге мы выезжаем из городов 2, 3, 4, то они тоже помещаются сюда*/
+/*#Sources - С‚Р°Р±Р»РёС†Р° СЃРѕ РІСЃРµРјРё РЅР°С‡Р°Р»Р°РјРё. Р•СЃР»Рё РјС‹ РЅР° 1-РѕРј С€Р°РіРµ РІС‹РµР·Р¶Р°РµРј РёР· РіРѕСЂРѕРґР° 1, РѕРЅ РїРµРјРµС‰Р°РµС‚СЃСЏ СЃСЋРґР°. 
+Р•СЃР»Рё РЅР° 2-РѕРј С€Р°РіРµ РјС‹ РІС‹РµР·Р¶Р°РµРј РёР· РіРѕСЂРѕРґРѕРІ 2, 3, 4, С‚Рѕ РѕРЅРё С‚РѕР¶Рµ РїРѕРјРµС‰Р°СЋС‚СЃСЏ СЃСЋРґР°*/
 create table #Sources(ID_sour int)
 
-/*#Destinations - таблица с конечными пунктами. Если едем из города 1, то тут будут находиться 2, 3, 4*/
+/*#Destinations - С‚Р°Р±Р»РёС†Р° СЃ РєРѕРЅРµС‡РЅС‹РјРё РїСѓРЅРєС‚Р°РјРё. Р•СЃР»Рё РµРґРµРј РёР· РіРѕСЂРѕРґР° 1, С‚Рѕ С‚СѓС‚ Р±СѓРґСѓС‚ РЅР°С…РѕРґРёС‚СЊСЃСЏ 2, 3, 4*/
 create table #Destinations(ID_des int)
 
 insert into #Destinations
@@ -84,12 +84,12 @@ begin
 	set @n = @n - 1
 end 
 
-select Название
+select РќР°Р·РІР°РЅРёРµ
 from (select distinct ID_sour
 	  from #Sources
 		union
 	  select distinct ID_des
-	  from #Destinations) as Identificators left join Города on ID_sour = Город_ID
+	  from #Destinations) as Identificators left join Р“РѕСЂРѕРґР° on ID_sour = Р“РѕСЂРѕРґ_ID
 
 drop table #Destinations
 drop table #Sources
@@ -103,9 +103,9 @@ order by #Routes.City_ID_1 asc
 
 --- 8
 select SUM(Distance) as Route_distance
-from (Расписание as Timetable_1 inner join Расписание as Timetable_2 on Timetable_1.Расписание_ID = Timetable_2.Расписание_ID and Timetable_1.Номер = Timetable_2.Номер - 1)
-left join #Routes on Timetable_1.Город_ID = #Routes.City_ID_1 and Timetable_2.Город_ID = #Routes.City_ID_2
-group by Timetable_1.Расписание_ID
-having count(#Routes.City_ID_1) = count(Timetable_1.Номер)
+from (Р Р°СЃРїРёСЃР°РЅРёРµ as Timetable_1 inner join Р Р°СЃРїРёСЃР°РЅРёРµ as Timetable_2 on Timetable_1.Р Р°СЃРїРёСЃР°РЅРёРµ_ID = Timetable_2.Р Р°СЃРїРёСЃР°РЅРёРµ_ID and Timetable_1.РќРѕРјРµСЂ = Timetable_2.РќРѕРјРµСЂ - 1)
+left join #Routes on Timetable_1.Р“РѕСЂРѕРґ_ID = #Routes.City_ID_1 and Timetable_2.Р“РѕСЂРѕРґ_ID = #Routes.City_ID_2
+group by Timetable_1.Р Р°СЃРїРёСЃР°РЅРёРµ_ID
+having count(#Routes.City_ID_1) = count(Timetable_1.РќРѕРјРµСЂ)
 
 drop table #Routes
